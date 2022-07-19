@@ -3,13 +3,11 @@ import { parseNearAmount } from "near-api-js/lib/utils/format";
 
 const GAS = 100000000000000;
 
-export function addYourAnimal({animal, amount}) {
+export function addYourAnimal({animal}) {
   animal.id = uuid4();
-
   animal.amount = parseNearAmount(animal.amount + "");
-  animal.uploadFee = parseNearAmount(amount+"");
-  console.log(animal, amount);
-  return window.contract.createAnimal({ animal }, GAS, animal.uploadFee);
+  console.log(animal);
+  return window.contract.createAnimal({ animal }, GAS, parseNearAmount("2"));
 }
 
 export function getAnimals() {

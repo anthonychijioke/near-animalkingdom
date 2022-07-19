@@ -6,12 +6,11 @@ export function createAnimal(animal: Animal): void {
   if (storedAnimal !== null) {
     throw new Error(`animal with ${animal.id} already exists`);
   }
-  if (animal.uploadFee.toString() != context.attachedDeposit.toString()) {
+  if (Animal.fromPayload(animal).uploadFee.toString() != context.attachedDeposit.toString()) {
     throw new Error("attached deposit should equal to the animal's price");
   }
-  const _animal = new Animal();
-  const admin = _animal.getAdmin();
-  ContractPromiseBatch.create(admin).transfer(context.attachedDeposit);
+
+  ContractPromiseBatch.create(context.contractName).transfer(context.attachedDeposit);
   animal.owner = context.sender;
   animal.sold = false;
 

@@ -4,7 +4,6 @@ import { PersistentUnorderedMap, u128, context } from "near-sdk-as";
 export class Animal {
   id: string;
   owner: string;
-  admin: string;
   name: string;
   image: string;
   description: string;
@@ -13,9 +12,6 @@ export class Animal {
   uploadFee: u128;
   releaseFee: u128;
 
-  constructor() {
-    this.admin = context.sender;
-  }
   public static fromPayload(payload: Animal): Animal {
     const animal = new Animal();
     animal.id = payload.id;
@@ -24,15 +20,11 @@ export class Animal {
     animal.amount = payload.amount;
     animal.owner = context.sender;
     animal.image = payload.image;
-    animal.admin = context.sender;
     animal.releaseFee = u128.from(1);
     animal.uploadFee = u128.from(2);
     return animal;
   }
 
-  getAdmin(): string {
-    return this.admin;
-  }
 }
 
 export const listedAnimal = new PersistentUnorderedMap<string, Animal>(
